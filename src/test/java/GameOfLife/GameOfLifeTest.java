@@ -19,4 +19,10 @@ class GameOfLifeTest {
         assertEquals(4,cell.y);
     }
 
+    @Test
+    void CheckCellToSeeIfItIsAliveExpectingFalse() {
+        Cell cell = new Cell(5,5);
+        assertFalse(cell.isAlive());
+    }
+
 }

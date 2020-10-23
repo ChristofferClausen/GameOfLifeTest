@@ -9,4 +9,8 @@ public class Cell {
         this.x = x;
         this.y = y;
     }
+
+    public boolean isAlive() {
+        return false;
+    }
 }
