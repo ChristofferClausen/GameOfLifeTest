@@ -36,4 +36,9 @@ class GameOfLifeTest {
         assertThrows(IllegalArgumentException.class,() -> new Cell(-1,-5));
     }
 
+    @Test
+    void InitializeCellWithNegativesAndPassingAliveBooleanExpectingIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,() -> new Cell(-1,-5,true));
+    }
+
 }
