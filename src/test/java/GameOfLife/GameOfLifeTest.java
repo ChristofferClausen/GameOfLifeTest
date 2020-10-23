@@ -8,7 +8,7 @@ class GameOfLifeTest {
 
     @Test
     void InitializeCellObjectExpectingNotNull() {
-        Cell cell = new Cell();
+        Cell cell = new Cell(5,5);
         assertNotNull(cell);
     }
 
