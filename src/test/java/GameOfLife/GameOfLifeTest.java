@@ -31,4 +31,9 @@ class GameOfLifeTest {
         assertTrue(cell.isAlive());
     }
 
+    @Test
+    void InitializeCellWithNegativesExpectingIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,() -> new Cell(-1,-5));
+    }
+
 }
