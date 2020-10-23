@@ -2,6 +2,7 @@ package GameOfLife;
 
 public class Cell {
 
+    private boolean alive;
     public int x;
     public int y;
 
@@ -10,7 +11,13 @@ public class Cell {
         this.y = y;
     }
 
+    public Cell(int x, int y, boolean alive) {
+        this.x = x;
+        this.y = y;
+        this.alive = alive;
+    }
+
     public boolean isAlive() {
-        return false;
+        return alive;
     }
 }
