@@ -28,4 +28,13 @@ public class Cell {
     public boolean isAlive() {
         return alive;
     }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "alive=" + alive +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
