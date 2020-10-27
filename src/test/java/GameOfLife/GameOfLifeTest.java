@@ -4,19 +4,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static GameOfLife.State.ALIVE;
 import static GameOfLife.State.DEAD;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeTest {
 
     GameOfLife gameOfLife;
-    List<Position> positions; //TODO set in beforeEach?
+    List<Position> positions;
 
-    //TODO Change to camelCase?
+    //TODO check all names
 
     @BeforeEach
     void initEach() {
@@ -46,7 +47,7 @@ class GameOfLifeTest {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         for (Position pos : positions) {
-            assertEquals(ALIVE,grid[pos.y][pos.x].isAlive());
+            assertEquals(ALIVE, grid[pos.y][pos.x].isAlive());
         }
     }
 
@@ -56,7 +57,7 @@ class GameOfLifeTest {
         var grid = gameOfLife.getGrid();
         var cell = grid[4][4];
         cell.updateState(DEAD);
-        assertEquals(DEAD,cell.isAlive());
+        assertEquals(DEAD, cell.isAlive());
     }
 
     @Test
@@ -65,7 +66,7 @@ class GameOfLifeTest {
         var grid = gameOfLife.getGrid();
         var cell = grid[2][2];
         cell.updateState(ALIVE);
-        assertEquals(ALIVE,cell.isAlive());
+        assertEquals(ALIVE, cell.isAlive());
     }
 
     @Test
@@ -91,7 +92,7 @@ class GameOfLifeTest {
     }
 
     @Test
-    void checkPrintGridMethodWithNoAliveCellsExpectingDeadGrid() { //TODO rename and make it look better
+    void checkPrintGridMethodWithNoAliveCellsExpectingDeadGrid() { //TODO make it look better?
         var deadGridRow = ".\t.\t.\t.\t.\t.\t.\t.\t.\t.\t" + "\n";
         var actualGrid = gameOfLife.gridString();
         assertEquals(deadGridRow.repeat(10), actualGrid);
@@ -127,8 +128,8 @@ class GameOfLifeTest {
     void updateGridExpectingThreeFiveAndFiveFiveToBeAlive() {
         gameOfLife.initializeFirstGeneration(positions);
         gameOfLife.nextGeneration(gameOfLife.getGrid());
-        assertEquals(ALIVE,gameOfLife.getGrid()[5][5].isAlive());
-        assertEquals(ALIVE,gameOfLife.getGrid()[5][3].isAlive());
+        assertEquals(ALIVE, gameOfLife.getGrid()[5][5].isAlive());
+        assertEquals(ALIVE, gameOfLife.getGrid()[5][3].isAlive());
     }
 
     @Test
@@ -151,7 +152,8 @@ class GameOfLifeTest {
                 new Position(6, 6)
         };
         var actualNeighbours = gameOfLife.neighboursArray(5, 5);
-        assertTrue(Arrays.equals(expectedNeighbours, actualNeighbours));
+        assertThat(actualNeighbours, contains(expectedNeighbours));
+
     }
 
     @Test
@@ -170,7 +172,7 @@ class GameOfLifeTest {
 
     @Test
     void tryingToInitializeWithPositionOutsideGridSizeExpectingArrayIndexOutOfBoundsException() {
-        positions.add(new Position(15,15));
+        positions.add(new Position(15, 15));
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> gameOfLife.initializeFirstGeneration(positions));
     }
 

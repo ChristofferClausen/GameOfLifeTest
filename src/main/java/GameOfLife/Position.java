@@ -19,5 +19,4 @@ public class Position {
         Position pos = (Position) o;
         return x == pos.x && y == pos.y;
     }
-
 }

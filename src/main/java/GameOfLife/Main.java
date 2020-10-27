@@ -36,10 +36,3 @@ public class Main {
         }, 0, 500, TimeUnit.MILLISECONDS);
     }
 }
-
-//        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//        executorService.scheduleAtFixedRate(() -> {
-//            updateCells();
-//            System.out.println("New generation");
-//            printGrid();
-//        }, 0, 1, TimeUnit.SECONDS);

@@ -1,5 +1,6 @@
 package GameOfLife;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static GameOfLife.State.ALIVE;
@@ -10,10 +11,10 @@ public class GameOfLife {
     private final int MINUS_ONE = -1;
     private final int ZERO = 0;
     private final int ONE = 1;
+    private final int MIN_NEIGHBOURS = 2;
+    private final int MAX_NEIGHBOURS = 3; //TODO local variable?
     private final int HEIGHT;
     private final int WIDTH;
-    private final int MAX_NEIGHBOURS = 3;
-    private final int MIN_NEIGHBOURS = 2;
     Cell[][] grid;
 
     GameOfLife(int height, int width) {
@@ -37,24 +38,6 @@ public class GameOfLife {
         }
     }
 
-    public String gridString() {
-        StringBuilder s = new StringBuilder();
-        for (Cell[] cells : grid) {
-            for (Cell cell : cells) {
-                if (cell.isAlive() == DEAD)
-                    s.append("." + "\t");
-                else
-                    s.append("x" + "\t");
-            }
-            s.append("\n");
-        }
-        return s.toString();
-    }
-
-    public Cell[][] getGrid() { //TODO rename
-        return grid;
-    }
-
     public String nextGeneration(Cell[][] grid) {
         countAllNeighbours();
         updateAllCells(grid);
@@ -70,9 +53,8 @@ public class GameOfLife {
     }
 
     public int countNeighbours(Cell[][] grid, int y, int x) {
-        Position pos = new Position(x, y);
-        var cell = grid[pos.y][pos.x];
-        var neighbours = neighboursArray(pos.y, pos.x);
+        var cell = grid[y][x];
+        var neighbours = neighboursArray(y, x);
         for (Position neighbour : neighbours) {
             if (neighbour.x >= ZERO && neighbour.x < WIDTH && neighbour.y >= ZERO && neighbour.y < HEIGHT && grid[neighbour.y][neighbour.x].isAlive() == ALIVE) {
                 cell.addNeighbour();
@@ -81,8 +63,8 @@ public class GameOfLife {
         return cell.countNeighbours();
     }
 
-    public Position[] neighboursArray(int y, int x) { //TODO rename
-        return new Position[]{
+    public List<Position> neighboursArray(int y, int x) { //TODO rename
+        Position[] neighbours = new Position[]{
                 new Position(x + MINUS_ONE, y + MINUS_ONE),
                 new Position(x + MINUS_ONE, y),
                 new Position(x + MINUS_ONE, y + ONE),
@@ -94,6 +76,7 @@ public class GameOfLife {
                 new Position(x + ONE, y),
                 new Position(x + ONE, y + ONE)
         };
+        return Arrays.asList(neighbours);
     }
 
     private void updateAllCells(Cell[][] grid) {
@@ -113,6 +96,24 @@ public class GameOfLife {
                 cell.updateState(ALIVE);
         }
         cell.resetNeighbour();
+    }
+
+    public Cell[][] getGrid() { //TODO rename
+        return grid;
+    }
+
+    public String gridString() {
+        StringBuilder s = new StringBuilder();
+        for (Cell[] cells : grid) {
+            for (Cell cell : cells) {
+                if (cell.isAlive() == DEAD)
+                    s.append("." + "\t");
+                else
+                    s.append("x" + "\t");
+            }
+            s.append("\n");
+        }
+        return s.toString();
     }
 
 }
