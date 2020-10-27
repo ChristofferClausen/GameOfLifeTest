@@ -31,18 +31,18 @@ class GameOfLifeTest {
     }
 
     @Test
-    void InitializeGameOfLifeObjectExpectingNotNull() {
+    void initializeGameOfLifeObjectExpectingNotNull() {
         assertNotNull(gameOfLife);
     }
 
     @Test
-    void InitializeFirstGenerationWithListParameterExpectingStringGridAsReturn() {
+    void initializeFirstGenerationWithListParameterExpectingStringGridAsReturn() {
         gameOfLife.initializeFirstGeneration(positions);
         assertTrue(gameOfLife.gridString().length() > 0);
     }
 
     @Test
-    void InitializeFirstGenerationWithListParameterExpectingReturnTrueOnIsAlive() {
+    void initializeFirstGenerationWithListParameterExpectingReturnTrueOnIsAlive() {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         for (Position pos : positions) {
@@ -51,7 +51,7 @@ class GameOfLifeTest {
     }
 
     @Test
-    void KillCellAtFourFourExpectingIsAliveToReturnFalse() {
+    void killCellAtFourFourExpectingIsAliveToReturnFalse() {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         var cell = grid[4][4];
@@ -60,7 +60,7 @@ class GameOfLifeTest {
     }
 
     @Test
-    void ResurrectCellAtTwoTwoExpectingIsAliveToReturnTrue() {
+    void resurrectCellAtTwoTwoExpectingIsAliveToReturnTrue() {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         var cell = grid[2][2];
@@ -69,36 +69,36 @@ class GameOfLifeTest {
     }
 
     @Test
-    void CheckAmountOfAliveNeighboursAtFourFiveExpectingTwo() {
+    void checkAmountOfAliveNeighboursAtFourFiveExpectingTwo() {
         gameOfLife.initializeFirstGeneration(positions);
         assertEquals(2, gameOfLife.countNeighbours(gameOfLife.getGrid(), 4, 5));
     }
 
     @Test
-    void CheckAmountOfAliveNeighboursAtZeroZeroExpectingZeroAndNoIndexOutOfBoundsException() {
+    void checkAmountOfAliveNeighboursAtZeroZeroExpectingZeroAndNoIndexOutOfBoundsException() {
         gameOfLife.initializeFirstGeneration(positions);
         assertEquals(0, gameOfLife.countNeighbours(gameOfLife.getGrid(), 0, 0));
     }
 
     @Test
-    void CheckAmountOfAliveNeighboursOutSideOfGridExpectingIndexOutOfBoundException() {
+    void checkAmountOfAliveNeighboursOutSideOfGridExpectingIndexOutOfBoundException() {
         assertThrows(IndexOutOfBoundsException.class, () -> gameOfLife.countNeighbours(gameOfLife.getGrid(), 10, 11));
     }
 
     @Test
-    void CheckAmountOfAliveNeighboursWithTooLowCoordinatesExpectingIndexOutOfBoundException() {
+    void checkAmountOfAliveNeighboursWithTooLowCoordinatesExpectingIndexOutOfBoundException() {
         assertThrows(IndexOutOfBoundsException.class, () -> gameOfLife.countNeighbours(gameOfLife.getGrid(), -1, 1));
     }
 
     @Test
-    void CheckPrintGridMethodWithNoAliveCellsExpectingDeadGrid() { //TODO rename and make it look better
+    void checkPrintGridMethodWithNoAliveCellsExpectingDeadGrid() { //TODO rename and make it look better
         var deadGridRow = ".\t.\t.\t.\t.\t.\t.\t.\t.\t.\t" + "\n";
         var actualGrid = gameOfLife.gridString();
         assertEquals(deadGridRow.repeat(10), actualGrid);
     }
 
     @Test
-    void CheckPrintGridMethodWithAliveCells() {
+    void checkPrintGridMethodWithAliveCells() {
         positions = new ArrayList<>();
         positions.add(new Position(2, 1));
         positions.add(new Position(2, 2));
@@ -114,7 +114,7 @@ class GameOfLifeTest {
     }
 
     @Test
-    void UpdateGridExpectingNewGridAfterUpdateASDASD() {
+    void updateGridExpectingNewGridAfterUpdateASDASD() {
         gameOfLife.initializeFirstGeneration(positions);
         var firstGrid = gameOfLife.gridString();
         var nextGeneration = gameOfLife.nextGeneration(gameOfLife.getGrid());
@@ -124,7 +124,7 @@ class GameOfLifeTest {
     }
 
     @Test
-    void UpdateGridExpectingThreeFiveAndFiveFiveToBeAlive() {
+    void updateGridExpectingThreeFiveAndFiveFiveToBeAlive() {
         gameOfLife.initializeFirstGeneration(positions);
         gameOfLife.nextGeneration(gameOfLife.getGrid());
         assertEquals(ALIVE,gameOfLife.getGrid()[5][5].isAlive());
@@ -132,12 +132,12 @@ class GameOfLifeTest {
     }
 
     @Test
-    void UpdateGridWithWrongParamsExpectingNullPointerException() { //TODO name
+    void updateGridWithWrongParamsExpectingNullPointerException() { //TODO name
         assertThrows(NullPointerException.class, () -> gameOfLife.nextGeneration(new Cell[1][1]));
     }
 
     @Test
-    void CheckNeighboursAtFiveFiveExpectingArrayOfSurroundingPositions() {
+    void checkNeighboursAtFiveFiveExpectingArrayOfSurroundingPositions() {
         var expectedNeighbours = new Position[]{
                 new Position(4, 4),
                 new Position(4, 5),
@@ -150,12 +150,12 @@ class GameOfLifeTest {
                 new Position(6, 5),
                 new Position(6, 6)
         };
-        var actualNeighbours = gameOfLife.getNeighbours(5, 5);
+        var actualNeighbours = gameOfLife.neighboursArray(5, 5);
         assertTrue(Arrays.equals(expectedNeighbours, actualNeighbours));
     }
 
     @Test
-    void TestThatNeighboursGetResetAtOneOneAfterCellUpdatesExpectingNeighboursToBeZero() {
+    void testThatNeighboursGetResetAtOneOneAfterCellUpdatesExpectingNeighboursToBeZero() {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         gameOfLife.countNeighbours(gameOfLife.getGrid(), 1, 1);
@@ -166,6 +166,12 @@ class GameOfLifeTest {
 
         assertEquals(1, oldCell);
         assertEquals(0, newCell);
+    }
+
+    @Test
+    void tryingToInitializeWithPositionOutsideGridSizeExpectingArrayIndexOutOfBoundsException() {
+        positions.add(new Position(15,15));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> gameOfLife.initializeFirstGeneration(positions));
     }
 
 }

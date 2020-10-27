@@ -51,18 +51,17 @@ public class GameOfLife {
         return s.toString();
     }
 
-    //TODO add a state?
     public Cell[][] getGrid() { //TODO rename
         return grid;
     }
 
     public String nextGeneration(Cell[][] grid) {
-        CountAllNeighbours();
+        countAllNeighbours();
         updateAllCells(grid);
         return gridString();
     }
 
-    private void CountAllNeighbours() {
+    private void countAllNeighbours() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int column = 0; column < WIDTH; column++) {
                 countNeighbours(grid, row, column);
@@ -73,16 +72,16 @@ public class GameOfLife {
     public int countNeighbours(Cell[][] grid, int y, int x) {
         Position pos = new Position(x, y);
         var cell = grid[pos.y][pos.x];
-        var neighbours = getNeighbours(pos.y, pos.x);
+        var neighbours = neighboursArray(pos.y, pos.x);
         for (Position neighbour : neighbours) {
             if (neighbour.x >= ZERO && neighbour.x < WIDTH && neighbour.y >= ZERO && neighbour.y < HEIGHT && grid[neighbour.y][neighbour.x].isAlive() == ALIVE) {
                 cell.addNeighbour();
             }
         }
-        return cell.countNeighbours(); //TODO Remove and test against cell instead?
+        return cell.countNeighbours();
     }
 
-    public Position[] getNeighbours(int y, int x) {
+    public Position[] neighboursArray(int y, int x) { //TODO rename
         return new Position[]{
                 new Position(x + MINUS_ONE, y + MINUS_ONE),
                 new Position(x + MINUS_ONE, y),

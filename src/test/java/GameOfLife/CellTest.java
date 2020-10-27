@@ -10,25 +10,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class CellTest {
 
     @Test
-    void InitializeCellObjectExpectingNotNull() {
+    void initializeCellObjectExpectingNotNull() {
         Cell cell = new Cell();
         assertNotNull(cell);
     }
 
     @Test
-    void CheckCellToSeeIfItIsAliveExpectingFalse() {
+    void checkCellToSeeIfItIsAliveExpectingFalse() {
         Cell cell = new Cell();
         assertEquals(DEAD,cell.isAlive());
     }
 
     @Test
-    void CheckCellToSeeIfItIsAliveWithParamExpectingTrue() {
+    void checkCellToSeeIfItIsAliveWithParamExpectingTrue() {
         Cell cell = new Cell(ALIVE);
         assertEquals(ALIVE,cell.isAlive());
     }
 
     @Test
-    void CheckCellToSeeIfAliveWithParamExpectingFalse() {
+    void checkCellToSeeIfAliveWithParamExpectingFalse() {
         Cell cell = new Cell(DEAD);
         assertEquals(DEAD,cell.isAlive());
     }

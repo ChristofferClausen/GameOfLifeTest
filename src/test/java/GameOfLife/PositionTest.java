@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class PositionTest {
 
     @Test
-    void InitializePositionWithOneOneExpectingANotNullObject() {
+    void initializePositionWithOneOneExpectingANotNullObject() {
         Position position = new Position(1,1);
         assertNotNull(position);
     }
 
     @Test
-    void InitializePositionWithFiveAndFiveExpectingXAndYToReturnFive() {
+    void initializePositionWithFiveAndFiveExpectingXAndYToReturnFive() {
         Position position = new Position(5,5);
         assertEquals(5,position.x);
         assertEquals(5,position.y);
