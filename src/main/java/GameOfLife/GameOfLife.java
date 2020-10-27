@@ -1,6 +1,5 @@
 package GameOfLife;
 
-import javax.sound.midi.Soundbank;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,7 +19,6 @@ public class GameOfLife {
     }
 
     private void initializeDeadGrid() {
-//        grid = new Cell[height][width];
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 grid[row][column] = new Cell();

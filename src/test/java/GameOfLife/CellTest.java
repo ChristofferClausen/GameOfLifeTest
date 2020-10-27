@@ -1,5 +1,6 @@
 package GameOfLife;
 
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +18,7 @@ class CellTest {
         Cell cell = new Cell();
         assertFalse(cell.isAlive());
     }
+
 
     @Test
     void CheckCellToSeeIfItIsAliveExpectingTrue() {
