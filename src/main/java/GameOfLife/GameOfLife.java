@@ -43,7 +43,7 @@ public class GameOfLife {
             for (Cell cell : cells) {
                 if (!cell.isAlive())
                     s.append("." + "\t");
-                else//TODO Look into this. Double prints when something is alive without else if?
+                else
                     s.append("x" + "\t");
             }
             s.append("\n");

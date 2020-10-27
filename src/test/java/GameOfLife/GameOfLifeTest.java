@@ -51,7 +51,7 @@ class GameOfLifeTest {
     @Test
     void KillCellAtFourFourExpectingIsAliveToReturnFalse() {
         gameOfLife.initializeFirstGeneration(positions);
-        var grid = gameOfLife.grid;
+        var grid = gameOfLife.getGrid();
         var cell = grid[4][4];
         cell.updateState(false);
         assertFalse(cell.isAlive());
@@ -60,7 +60,7 @@ class GameOfLifeTest {
     @Test
     void ResurrectCellAtTwoTwoExpectingIsAliveToReturnTrue() {
         gameOfLife.initializeFirstGeneration(positions);
-        var grid = gameOfLife.grid;
+        var grid = gameOfLife.getGrid();
         var cell = grid[2][2];
         cell.updateState(true);
         assertTrue(cell.isAlive());
@@ -115,7 +115,7 @@ class GameOfLifeTest {
     void UpdateGridExpectingNewGridAfterUpdateASDASD() {
         gameOfLife.initializeFirstGeneration(positions);
         var firstGrid = gameOfLife.printGrid();
-        var nextGeneration = gameOfLife.nextGeneration(gameOfLife.grid);
+        var nextGeneration = gameOfLife.nextGeneration(gameOfLife.getGrid());
         var newGrid = gameOfLife.printGrid();
         assertNotEquals(firstGrid, newGrid);
         assertNotEquals("",nextGeneration);
@@ -124,13 +124,13 @@ class GameOfLifeTest {
     @Test
     void UpdateGridExpectingThreeFiveAndFiveFiveToBeAlive() {
         gameOfLife.initializeFirstGeneration(positions);
-        gameOfLife.nextGeneration(gameOfLife.grid);
-        assertTrue(gameOfLife.grid[5][5].isAlive());
-        assertTrue(gameOfLife.grid[5][3].isAlive());
+        gameOfLife.nextGeneration(gameOfLife.getGrid());
+        assertTrue(gameOfLife.getGrid()[5][5].isAlive());
+        assertTrue(gameOfLife.getGrid()[5][3].isAlive());
     }
 
     @Test
-    void UpdateGridWithWrongParamsExpectingNullPointerException() {
+    void UpdateGridWithWrongParamsExpectingNullPointerException() { //TODO name
         assertThrows(NullPointerException.class, () -> gameOfLife.nextGeneration(new Cell[1][1]));
     }
 
@@ -165,7 +165,7 @@ class GameOfLifeTest {
     @Test
     void TestThatNeighboursGetResetAtOneOneAfterCellUpdatesExpectingNeighboursToBeZero() {
         gameOfLife.initializeFirstGeneration(positions);
-        var grid = gameOfLife.grid;
+        var grid = gameOfLife.getGrid();
         gameOfLife.checkNeighbours(1,1);
         var oldCell = grid[1][1].getNeighbours();
         gameOfLife.nextGeneration(grid);
