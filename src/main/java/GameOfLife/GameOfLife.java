@@ -2,6 +2,9 @@ package GameOfLife;
 
 import java.util.List;
 
+import static GameOfLife.State.ALIVE;
+import static GameOfLife.State.DEAD;
+
 public class GameOfLife {
 
     private final int MINUS_ONE = -1;
@@ -30,7 +33,7 @@ public class GameOfLife {
 
     public void initializeFirstGeneration(List<Position> positions) {
         for (Position position : positions) {
-            grid[position.y][position.x].updateState(true);
+            grid[position.y][position.x].updateState(ALIVE);
         }
     }
 
@@ -38,7 +41,7 @@ public class GameOfLife {
         StringBuilder s = new StringBuilder();
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {
-                if (!cell.isAlive())
+                if (cell.isAlive() == DEAD)
                     s.append("." + "\t");
                 else
                     s.append("x" + "\t");
@@ -54,29 +57,29 @@ public class GameOfLife {
     }
 
     public String nextGeneration(Cell[][] grid) {
-        checkAllNeighbours();
-        updateCells(grid);
+        CountAllNeighbours();
+        updateAllCells(grid);
         return gridString();
     }
 
-    private void checkAllNeighbours() {
+    private void CountAllNeighbours() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int column = 0; column < WIDTH; column++) {
-                checkNeighbours(row, column, grid);
+                countNeighbours(grid, row, column);
             }
         }
     }
 
-    public int checkNeighbours(int y, int x, Cell[][] grid) {
+    public int countNeighbours(Cell[][] grid, int y, int x) {
         Position pos = new Position(x, y);
         var cell = grid[pos.y][pos.x];
         var neighbours = getNeighbours(pos.y, pos.x);
         for (Position neighbour : neighbours) {
-            if (neighbour.x >= ZERO && neighbour.x < WIDTH && neighbour.y >= ZERO && neighbour.y < HEIGHT && grid[neighbour.y][neighbour.x].isAlive()) {
+            if (neighbour.x >= ZERO && neighbour.x < WIDTH && neighbour.y >= ZERO && neighbour.y < HEIGHT && grid[neighbour.y][neighbour.x].isAlive() == ALIVE) {
                 cell.addNeighbour();
             }
         }
-        return cell.getNeighbours(); //TODO Remove and test against cell instead?
+        return cell.countNeighbours(); //TODO Remove and test against cell instead?
     }
 
     public Position[] getNeighbours(int y, int x) {
@@ -94,7 +97,7 @@ public class GameOfLife {
         };
     }
 
-    private void updateCells(Cell[][] grid) {
+    private void updateAllCells(Cell[][] grid) {
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {
                 updateCell(cell);
@@ -103,12 +106,12 @@ public class GameOfLife {
     }
 
     private void updateCell(Cell cell) {
-        if (cell.isAlive()) {
-            if (cell.getNeighbours() < MIN_NEIGHBOURS || cell.getNeighbours() > MAX_NEIGHBOURS)
-                cell.updateState(false);
+        if (cell.isAlive() == ALIVE) {
+            if (cell.countNeighbours() < MIN_NEIGHBOURS || cell.countNeighbours() > MAX_NEIGHBOURS)
+                cell.updateState(DEAD);
         } else {
-            if (cell.getNeighbours() == MAX_NEIGHBOURS)
-                cell.updateState(true);
+            if (cell.countNeighbours() == MAX_NEIGHBOURS)
+                cell.updateState(ALIVE);
         }
         cell.resetNeighbour();
     }

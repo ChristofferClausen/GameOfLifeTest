@@ -1,24 +1,26 @@
 package GameOfLife;
 
+import static GameOfLife.State.*;
+
 public class Cell {
 
-    private boolean alive;
+    private State state;
     private int neighbours;
 
-    public Cell(boolean alive) {
-        this.alive = alive;
+    public Cell(State state) {
+        this.state = state;
     }
 
     public Cell() {
-        this.alive = false;
+        this.state = DEAD;
     }
 
-    public boolean isAlive() {
-        return alive;
+    public State isAlive() {
+        return state;
     }
 
-    public void updateState(boolean alive) {
-        this.alive = alive;
+    public void updateState(State state) {
+        this.state = state;
     }
 
     public void addNeighbour() {
@@ -29,7 +31,7 @@ public class Cell {
         neighbours = 0;
     }
 
-    public int getNeighbours() {
+    public int countNeighbours() {
         return neighbours;
     }
 

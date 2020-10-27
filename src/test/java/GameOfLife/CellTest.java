@@ -3,6 +3,8 @@ package GameOfLife;
 
 import org.junit.jupiter.api.Test;
 
+import static GameOfLife.State.ALIVE;
+import static GameOfLife.State.DEAD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
@@ -16,19 +18,19 @@ class CellTest {
     @Test
     void CheckCellToSeeIfItIsAliveExpectingFalse() {
         Cell cell = new Cell();
-        assertFalse(cell.isAlive());
+        assertEquals(DEAD,cell.isAlive());
     }
 
     @Test
     void CheckCellToSeeIfItIsAliveWithParamExpectingTrue() {
-        Cell cell = new Cell(true);
-        assertTrue(cell.isAlive());
+        Cell cell = new Cell(ALIVE);
+        assertEquals(ALIVE,cell.isAlive());
     }
 
     @Test
     void CheckCellToSeeIfAliveWithParamExpectingFalse() {
-        Cell cell = new Cell(false);
-        assertFalse(cell.isAlive());
+        Cell cell = new Cell(DEAD);
+        assertEquals(DEAD,cell.isAlive());
     }
 
 }

@@ -1,13 +1,14 @@
 package GameOfLife;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static GameOfLife.State.ALIVE;
+import static GameOfLife.State.DEAD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeTest {
@@ -45,7 +46,7 @@ class GameOfLifeTest {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         for (Position pos : positions) {
-            assertTrue(grid[pos.y][pos.x].isAlive());
+            assertEquals(ALIVE,grid[pos.y][pos.x].isAlive());
         }
     }
 
@@ -54,8 +55,8 @@ class GameOfLifeTest {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         var cell = grid[4][4];
-        cell.updateState(false);
-        assertFalse(cell.isAlive());
+        cell.updateState(DEAD);
+        assertEquals(DEAD,cell.isAlive());
     }
 
     @Test
@@ -63,30 +64,30 @@ class GameOfLifeTest {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
         var cell = grid[2][2];
-        cell.updateState(true);
-        assertTrue(cell.isAlive());
+        cell.updateState(ALIVE);
+        assertEquals(ALIVE,cell.isAlive());
     }
 
     @Test
     void CheckAmountOfAliveNeighboursAtFourFiveExpectingTwo() {
         gameOfLife.initializeFirstGeneration(positions);
-        assertEquals(2, gameOfLife.checkNeighbours(4, 5, gameOfLife.getGrid()));
+        assertEquals(2, gameOfLife.countNeighbours(gameOfLife.getGrid(), 4, 5));
     }
 
     @Test
     void CheckAmountOfAliveNeighboursAtZeroZeroExpectingZeroAndNoIndexOutOfBoundsException() {
         gameOfLife.initializeFirstGeneration(positions);
-        assertEquals(0, gameOfLife.checkNeighbours(0, 0, gameOfLife.getGrid()));
+        assertEquals(0, gameOfLife.countNeighbours(gameOfLife.getGrid(), 0, 0));
     }
 
     @Test
     void CheckAmountOfAliveNeighboursOutSideOfGridExpectingIndexOutOfBoundException() {
-        assertThrows(IndexOutOfBoundsException.class, () -> gameOfLife.checkNeighbours(10, 11, gameOfLife.getGrid()));
+        assertThrows(IndexOutOfBoundsException.class, () -> gameOfLife.countNeighbours(gameOfLife.getGrid(), 10, 11));
     }
 
     @Test
     void CheckAmountOfAliveNeighboursWithTooLowCoordinatesExpectingIndexOutOfBoundException() {
-        assertThrows(IndexOutOfBoundsException.class, () -> gameOfLife.checkNeighbours(-1, 1, gameOfLife.getGrid()));
+        assertThrows(IndexOutOfBoundsException.class, () -> gameOfLife.countNeighbours(gameOfLife.getGrid(), -1, 1));
     }
 
     @Test
@@ -126,8 +127,8 @@ class GameOfLifeTest {
     void UpdateGridExpectingThreeFiveAndFiveFiveToBeAlive() {
         gameOfLife.initializeFirstGeneration(positions);
         gameOfLife.nextGeneration(gameOfLife.getGrid());
-        assertTrue(gameOfLife.getGrid()[5][5].isAlive());
-        assertTrue(gameOfLife.getGrid()[5][3].isAlive());
+        assertEquals(ALIVE,gameOfLife.getGrid()[5][5].isAlive());
+        assertEquals(ALIVE,gameOfLife.getGrid()[5][3].isAlive());
     }
 
     @Test
@@ -157,11 +158,11 @@ class GameOfLifeTest {
     void TestThatNeighboursGetResetAtOneOneAfterCellUpdatesExpectingNeighboursToBeZero() {
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
-        gameOfLife.checkNeighbours(1, 1, gameOfLife.getGrid());
-        var oldCell = grid[1][1].getNeighbours();
+        gameOfLife.countNeighbours(gameOfLife.getGrid(), 1, 1);
+        var oldCell = grid[1][1].countNeighbours();
         gameOfLife.nextGeneration(grid);
-        gameOfLife.checkNeighbours(1, 1, gameOfLife.getGrid());
-        var newCell = grid[1][1].getNeighbours();
+        gameOfLife.countNeighbours(gameOfLife.getGrid(), 1, 1);
+        var newCell = grid[1][1].countNeighbours();
 
         assertEquals(1, oldCell);
         assertEquals(0, newCell);
