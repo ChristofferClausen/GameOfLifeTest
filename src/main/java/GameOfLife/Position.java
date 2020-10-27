@@ -10,4 +10,14 @@ public class Position {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Position))
+            return false;
+        Position pos = (Position) o;
+        return x == pos.x && y == pos.y;
+    }
+
 }

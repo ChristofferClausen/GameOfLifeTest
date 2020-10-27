@@ -1,107 +1,126 @@
 package GameOfLife;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class GameOfLife {
 
-    private final int height;
-    private final int width;
+    private final int MINUS_ONE = -1;
+    private final int ZERO = 0;
+    private final int ONE = 1;
+    private final int HEIGHT;
+    private final int WIDTH;
+    private final int GRID_CELLS;
+    private final int MAX_NEIGHBOURS = 3;
+    private final int MIN_NEIGHBOURS = 2;
     Cell[][] grid;
 
     GameOfLife(int height, int width) {
-        this.height = height;
-        this.width = width;
+        this.HEIGHT = height;
+        this.WIDTH = width;
+        this.GRID_CELLS = height * width;
         grid = new Cell[height][width];
         initializeDeadGrid();
     }
 
     private void initializeDeadGrid() {
-        for (int row = 0; row < height; row++) {
-            for (int column = 0; column < width; column++) {
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int column = 0; column < WIDTH; column++) {
                 grid[row][column] = new Cell();
             }
         }
     }
 
-    public void initializeFirstGeneration(List<Position> positions) {
+    public String initializeFirstGeneration(List<Position> positions) {
         for (Position position : positions) {
             grid[position.y][position.x].updateState(true);
         }
-        System.out.println("First generation");
-        printGrid();
+        return printGrid();
     }
 
-    public void printGrid() {
+    public String printGrid() {
+        StringBuilder s = new StringBuilder();
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {
-                if (cell.isAlive())
-                    System.out.print("x" + "\t");
-                else if (!cell.isAlive()) //TODO Look into this. Double prints when something is alive without else if?
-                    System.out.print("." + "\t");
+                if (!cell.isAlive())
+                    s.append("." + "\t");
+                else//TODO Look into this. Double prints when something is alive without else if?
+                    s.append("x" + "\t");
             }
-            System.out.println();
+            s.append("\n");
         }
+        return s.toString();
     }
 
     //TODO add a state?
-    public Cell[][] checkState() { //TODO rename
+    public Cell[][] getGrid() { //TODO rename
         return grid;
     }
 
-    public void nextGeneration() {
-        for (int row = 0; row <height; row++) {
-            for (int column = 0; column < width; column++) {
-                checkNeighbours(row,column);
+    public String nextGeneration(Cell[][] grid) {
+        if (checkAllNeighbours() == GRID_CELLS)
+            if (updateCells(grid) == GRID_CELLS)
+                return printGrid();
+        throw new NullPointerException();
+    }
+
+    private int checkAllNeighbours() {
+        int cellsChecked = 0;
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int column = 0; column < WIDTH; column++) {
+                checkNeighbours(row, column);
+                cellsChecked++;
             }
         }
-        updateCells();
-        System.out.println("New generation");
-        printGrid();
-        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> {
-            updateCells();
-            System.out.println("New generation");
-            printGrid();
-        }, 0, 1, TimeUnit.SECONDS);
-        //TODO loop for more generations
+        return cellsChecked;
     }
 
     public int checkNeighbours(int y, int x) {
-        var cell = grid[y][x];
-        Position[] neighbours = new Position[]{
-                new Position(x - 1, y - 1),
-                new Position(x - 1, y),
-                new Position(x - 1, y + 1),
-
-                new Position(x, y - 1),
-                new Position(x, y + 1),
-
-                new Position(x + 1, y - 1),
-                new Position(x + 1, y),
-                new Position(x + 1, y + 1),
-        };
-        for(Position neighbour: neighbours) {
-            if (neighbour.x >= 0 && neighbour.x < width && neighbour.y >= 0 && neighbour.y < height && grid[neighbour.y][neighbour.x].isAlive()) {
+        Position pos = new Position(x, y);
+        var cell = grid[pos.y][pos.x];
+        var neighbours = getNeighbours(pos.y, pos.x);
+        for (Position neighbour : neighbours) {
+            if (neighbour.x >= ZERO && neighbour.x < WIDTH && neighbour.y >= ZERO && neighbour.y < HEIGHT && grid[neighbour.y][neighbour.x].isAlive()) {
                 cell.addNeighbour();
             }
         }
         return cell.getNeighbours(); //TODO Remove and test against cell instead?
     }
 
-    private void updateCells() {
+    public Position[] getNeighbours(int y, int x) {
+        return new Position[]{
+                new Position(x + MINUS_ONE, y + MINUS_ONE),
+                new Position(x + MINUS_ONE, y),
+                new Position(x + MINUS_ONE, y + ONE),
+
+                new Position(x, y + MINUS_ONE),
+                new Position(x, y + ONE),
+
+                new Position(x + ONE, y + MINUS_ONE),
+                new Position(x + ONE, y),
+                new Position(x + ONE, y + ONE)
+        };
+    }
+
+    private int updateCells(Cell[][] grid) {
+        int cellsUpdated = 0;
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {
-                if (cell.isAlive()) {
-                    if (cell.getNeighbours() < 2 || cell.getNeighbours() > 3)
-                        cell.updateState(false);
-                } else {
-                    if (cell.getNeighbours() == 3)
-                    cell.updateState(true);
-                }
+                updateCell(cell);
+                cellsUpdated++;
             }
         }
+        return cellsUpdated;
     }
+
+    private void updateCell(Cell cell) {
+        if (cell.isAlive()) {
+            if (cell.getNeighbours() < MIN_NEIGHBOURS || cell.getNeighbours() > MAX_NEIGHBOURS)
+                cell.updateState(false);
+        } else {
+            if (cell.getNeighbours() == MAX_NEIGHBOURS)
+                cell.updateState(true);
+        }
+        cell.resetNeighbour();
+    }
+
 }

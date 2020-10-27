@@ -19,11 +19,16 @@ class CellTest {
         assertFalse(cell.isAlive());
     }
 
-
     @Test
-    void CheckCellToSeeIfItIsAliveExpectingTrue() {
+    void CheckCellToSeeIfItIsAliveWithParamExpectingTrue() {
         Cell cell = new Cell(true);
         assertTrue(cell.isAlive());
+    }
+
+    @Test
+    void CheckCellToSeeIfAliveWithParamExpectingFalse() {
+        Cell cell = new Cell(false);
+        assertFalse(cell.isAlive());
     }
 
 }

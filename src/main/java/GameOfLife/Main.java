@@ -16,6 +16,14 @@ public class Main {
         positions.add(new Position(8, 8));
 
         gameOfLife.initializeFirstGeneration(positions);
-        gameOfLife.nextGeneration();
+        var grid = gameOfLife.grid;
+        var newGeneration = gameOfLife.nextGeneration(grid);
     }
 }
+
+//        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+//        executorService.scheduleAtFixedRate(() -> {
+//            updateCells();
+//            System.out.println("New generation");
+//            printGrid();
+//        }, 0, 1, TimeUnit.SECONDS);
