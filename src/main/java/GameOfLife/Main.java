@@ -13,7 +13,7 @@ public class Main {
         positions = aliveCells();
         gameOfLife.initializeFirstGeneration(positions);
         var grid = gameOfLife.getGrid();
-//        loopGenerations(gameOfLife, grid);
+        loopGenerations(gameOfLife, grid);
     }
 
     private static List<Position> aliveCells() {
@@ -32,7 +32,7 @@ public class Main {
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             gameOfLife.nextGeneration(grid);
-            System.out.println(gameOfLife.printGrid());
+            System.out.println(gameOfLife.gridString());
         }, 0, 500, TimeUnit.MILLISECONDS);
     }
 }

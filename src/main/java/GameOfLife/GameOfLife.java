@@ -9,7 +9,6 @@ public class GameOfLife {
     private final int ONE = 1;
     private final int HEIGHT;
     private final int WIDTH;
-    private final int GRID_CELLS;
     private final int MAX_NEIGHBOURS = 3;
     private final int MIN_NEIGHBOURS = 2;
     Cell[][] grid;
@@ -17,7 +16,6 @@ public class GameOfLife {
     GameOfLife(int height, int width) {
         this.HEIGHT = height;
         this.WIDTH = width;
-        this.GRID_CELLS = height * width;
         grid = new Cell[height][width];
         initializeDeadGrid();
     }
@@ -30,14 +28,13 @@ public class GameOfLife {
         }
     }
 
-    public String initializeFirstGeneration(List<Position> positions) {
+    public void initializeFirstGeneration(List<Position> positions) {
         for (Position position : positions) {
             grid[position.y][position.x].updateState(true);
         }
-        return printGrid();
     }
 
-    public String printGrid() {
+    public String gridString() {
         StringBuilder s = new StringBuilder();
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {
@@ -57,24 +54,20 @@ public class GameOfLife {
     }
 
     public String nextGeneration(Cell[][] grid) {
-        if (checkAllNeighbours() == GRID_CELLS)
-            if (updateCells(grid) == GRID_CELLS)
-                return printGrid();
-        throw new NullPointerException();
+        checkAllNeighbours();
+        updateCells(grid);
+        return gridString();
     }
 
-    private int checkAllNeighbours() {
-        int cellsChecked = 0;
+    private void checkAllNeighbours() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int column = 0; column < WIDTH; column++) {
-                checkNeighbours(row, column);
-                cellsChecked++;
+                checkNeighbours(row, column, grid);
             }
         }
-        return cellsChecked;
     }
 
-    public int checkNeighbours(int y, int x) {
+    public int checkNeighbours(int y, int x, Cell[][] grid) {
         Position pos = new Position(x, y);
         var cell = grid[pos.y][pos.x];
         var neighbours = getNeighbours(pos.y, pos.x);
@@ -101,15 +94,12 @@ public class GameOfLife {
         };
     }
 
-    private int updateCells(Cell[][] grid) {
-        int cellsUpdated = 0;
+    private void updateCells(Cell[][] grid) {
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {
                 updateCell(cell);
-                cellsUpdated++;
             }
         }
-        return cellsUpdated;
     }
 
     private void updateCell(Cell cell) {
