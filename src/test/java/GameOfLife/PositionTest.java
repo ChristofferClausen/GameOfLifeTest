@@ -39,4 +39,11 @@ class PositionTest {
         assertNotEquals(position,string);
     }
 
+    @Test
+    void compareTwoPositionObjectThatArentTheSameExpectingReturnFalse() {
+        Position pos1 = new Position(1,1);
+        Position pos2 = new Position(1,2);
+        assertNotEquals(pos1, pos2);
+    }
+
 }

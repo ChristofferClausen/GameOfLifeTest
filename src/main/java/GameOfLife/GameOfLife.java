@@ -41,7 +41,7 @@ public class GameOfLife {
     public String nextGeneration(Cell[][] grid) {
         countAllNeighbours();
         updateAllCells(grid);
-        return gridString();
+        return gridAsString();
     }
 
     private void countAllNeighbours() {
@@ -102,7 +102,7 @@ public class GameOfLife {
         return grid;
     }
 
-    public String gridString() {
+    public String gridAsString() {
         StringBuilder s = new StringBuilder();
         for (Cell[] cells : grid) {
             for (Cell cell : cells) {

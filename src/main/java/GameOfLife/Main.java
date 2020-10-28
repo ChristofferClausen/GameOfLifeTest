@@ -18,7 +18,7 @@ public class Main {
     private static GameOfLife initializeGame(int height, int width, String pattern) {
         GameOfLife gameOfLife = new GameOfLife(height,width);
         gameOfLife.initializeFirstGeneration(pattern(pattern));
-        System.out.println(gameOfLife.gridString());
+        System.out.println(gameOfLife.gridAsString());
         return gameOfLife;
     }
 
@@ -37,7 +37,7 @@ public class Main {
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             gameOfLife.nextGeneration(gameOfLife.getGrid());
-            System.out.println(gameOfLife.gridString());
+            System.out.println(gameOfLife.gridAsString());
         }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
