@@ -5,7 +5,7 @@ import static GameOfLife.State.*;
 public class Cell {
 
     private State state;
-    private int neighbours; //TODO aliveNeighbours
+    private int aliveNeighbours;
 
     public Cell(State state) {
         this.state = state;
@@ -23,16 +23,16 @@ public class Cell {
         this.state = state;
     }
 
-    public void addNeighbour() {
-        neighbours++;
+    public void addAliveNeighbour() {
+        aliveNeighbours++;
     }
 
-    public void resetNeighbour() {
-        neighbours = 0;
+    public void resetAliveNeighbour() {
+        aliveNeighbours = 0;
     }
 
-    public int countNeighbours() {
-        return neighbours;
+    public int countAliveNeighbours() {
+        return aliveNeighbours;
     }
 
 }

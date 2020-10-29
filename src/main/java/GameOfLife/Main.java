@@ -9,9 +9,14 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) {
-        var height = Integer.parseInt(args[0]);
-        var width = Integer.parseInt(args[1]);
-        var gameOfLife = initializeGame(height,width,args[2]);
+        GameOfLife gameOfLife;
+        if (args.length > 0) {
+            var height = Integer.parseInt(args[0]);
+            var width = Integer.parseInt(args[1]);
+            gameOfLife = initializeGame(height,width,args[2]);
+        } else
+            gameOfLife = initializeGame(10,10,"glider");
+
         loopGenerations(gameOfLife);
     }
 
@@ -20,6 +25,14 @@ public class Main {
         gameOfLife.initializeFirstGeneration(pattern(pattern));
         System.out.println(gameOfLife.gridAsString());
         return gameOfLife;
+    }
+
+    private static void loopGenerations(GameOfLife gameOfLife) {
+        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(() -> {
+            gameOfLife.nextGeneration(gameOfLife.getGrid());
+            System.out.println(gameOfLife.gridAsString());
+        }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     private static List<Position> pattern(String pattern) {
@@ -31,14 +44,6 @@ public class Main {
             default:
                 throw new IllegalArgumentException();
         }
-    }
-
-    private static void loopGenerations(GameOfLife gameOfLife) {
-        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> {
-            gameOfLife.nextGeneration(gameOfLife.getGrid());
-            System.out.println(gameOfLife.gridAsString());
-        }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     private static List<Position> oscillator() {

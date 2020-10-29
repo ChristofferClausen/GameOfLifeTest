@@ -54,16 +54,16 @@ public class GameOfLife {
 
     public int countNeighbours(Cell[][] grid, int y, int x) {
         var cell = grid[y][x];
-        var neighbours = neighboursArray(y, x);
+        var neighbours = getNeighbours(y, x);
         for (Position neighbour : neighbours) {
             if (neighbour.x >= ZERO && neighbour.x < WIDTH && neighbour.y >= ZERO && neighbour.y < HEIGHT && grid[neighbour.y][neighbour.x].isAlive() == ALIVE) {
-                cell.addNeighbour();
+                cell.addAliveNeighbour();
             }
         }
-        return cell.countNeighbours();
+        return cell.countAliveNeighbours();
     }
 
-    public List<Position> neighboursArray(int y, int x) { //TODO rename
+    public List<Position> getNeighbours(int y, int x) {
         Position[] neighbours = new Position[]{
                 new Position(x + MINUS_ONE, y + MINUS_ONE),
                 new Position(x + MINUS_ONE, y),
@@ -89,16 +89,16 @@ public class GameOfLife {
 
     private void updateCell(Cell cell) {
         if (cell.isAlive() == ALIVE) {
-            if (cell.countNeighbours() < MIN_NEIGHBOURS || cell.countNeighbours() > MAX_NEIGHBOURS)
+            if (cell.countAliveNeighbours() < MIN_NEIGHBOURS || cell.countAliveNeighbours() > MAX_NEIGHBOURS)
                 cell.updateState(DEAD);
         } else {
-            if (cell.countNeighbours() == MAX_NEIGHBOURS)
+            if (cell.countAliveNeighbours() == MAX_NEIGHBOURS)
                 cell.updateState(ALIVE);
         }
-        cell.resetNeighbour();
+        cell.resetAliveNeighbour();
     }
 
-    public Cell[][] getGrid() { //TODO rename
+    public Cell[][] getGrid() {
         return grid;
     }
 

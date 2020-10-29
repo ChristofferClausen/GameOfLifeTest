@@ -157,7 +157,7 @@ class GameOfLifeTest {
                 new Position(6, 5),
                 new Position(6, 6)
         };
-        var actualNeighbours = gameOfLife.neighboursArray(5, 5);
+        var actualNeighbours = gameOfLife.getNeighbours(5, 5);
         assertThat(actualNeighbours, contains(expectedNeighbours));
 
     }
@@ -168,11 +168,11 @@ class GameOfLifeTest {
         var grid = gameOfLife.getGrid();
 
         gameOfLife.countNeighbours(gameOfLife.getGrid(), 1, 1);
-        var oldCell = grid[1][1].countNeighbours();
+        var oldCell = grid[1][1].countAliveNeighbours();
 
         gameOfLife.nextGeneration(grid);
 //        gameOfLife.countNeighbours(gameOfLife.getGrid(), 1, 1);
-        var newCell = grid[1][1].countNeighbours();
+        var newCell = grid[1][1].countAliveNeighbours();
 
         assertEquals(1, oldCell);
         assertEquals(0, newCell);

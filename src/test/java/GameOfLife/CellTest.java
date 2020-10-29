@@ -16,19 +16,19 @@ class CellTest {
     }
 
     @Test
-    void checkCellToSeeIfItIsAliveExpectingFalse() {
+    void isAliveReturnsFalse() {
         Cell cell = new Cell();
         assertEquals(DEAD, cell.isAlive());
     }
 
     @Test
-    void checkCellToSeeIfItIsAliveWithParamExpectingTrue() {
+    void isAliveWithParamReturnsTrue() {
         Cell cell = new Cell(ALIVE);
         assertEquals(ALIVE, cell.isAlive());
     }
 
     @Test
-    void checkCellToSeeIfAliveWithParamExpectingFalse() {
+    void isAliveWithParamReturnsFalse() {
         Cell cell = new Cell(DEAD);
         assertEquals(DEAD, cell.isAlive());
     }

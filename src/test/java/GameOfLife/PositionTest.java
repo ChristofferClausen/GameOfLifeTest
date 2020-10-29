@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PositionTest {
 
     @Test
-    void initializePositionWithOneOneExpectingANotNullObject() {
+    void initializePositionExpectingANotNullObject() {
         Position position = new Position(1,1);
         assertNotNull(position);
     }
@@ -20,27 +20,27 @@ class PositionTest {
     }
 
     @Test
-    void compareTwoPositionsExpectingTrue() {
+    void compareTwoSamePositionsReturnsTrue() {
         Position pos1 = new Position(1,1);
         Position pos2 = new Position(1,1);
         assertEquals(pos1, pos2);
     }
 
     @Test
-    void compareAnObjectWithItselfExpectingTrue() {
+    void compareAnObjectWithItselfReturnsTrue() {
         Position position = new Position(1,1);
         assertEquals(position,position);
     }
 
     @Test
-    void comparePositionWithAnObjetThatsNotAPositionExpectingFalse() {
+    void comparePositionWithAnObjectThatsNotAPositionReturnsFalse() {
         Position position = new Position(1,1);
         Object string = "Position";
         assertNotEquals(position,string);
     }
 
     @Test
-    void compareTwoPositionObjectThatArentTheSameExpectingReturnFalse() {
+    void compareTwoPositionObjectThatArentTheSameReturnsFalse() {
         Position pos1 = new Position(1,1);
         Position pos2 = new Position(1,2);
         assertNotEquals(pos1, pos2);
