@@ -70,7 +70,7 @@ class GameOfLifeTest {
     }
 
     @Test
-    void coutNeighboursAtFourFiveReturnsTwo() {
+    void countNeighboursAtFourFiveReturnsTwo() {
         gameOfLife.initializeFirstGeneration(positions);
         assertEquals(2, gameOfLife.countNeighbours(gameOfLife.getGrid(), 4, 5));
     }

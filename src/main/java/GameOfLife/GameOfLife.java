@@ -8,11 +8,11 @@ import static GameOfLife.State.DEAD;
 
 public class GameOfLife {
 
-    private final int MINUS_ONE = -1;
-    private final int ZERO = 0;
-    private final int ONE = 1;
-    private final int MIN_NEIGHBOURS = 2;
-    private final int MAX_NEIGHBOURS = 3; //TODO local variable?
+    private static final int MINUS_ONE = -1;
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int MIN_NEIGHBOURS = 2;
+    private static final int MAX_NEIGHBOURS = 3;
     private final int HEIGHT;
     private final int WIDTH;
     Cell[][] grid;

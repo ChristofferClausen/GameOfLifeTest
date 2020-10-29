@@ -5,7 +5,7 @@ import static GameOfLife.State.*;
 public class Cell {
 
     private State state;
-    private int neighbours;
+    private int neighbours; //TODO aliveNeighbours
 
     public Cell(State state) {
         this.state = state;
